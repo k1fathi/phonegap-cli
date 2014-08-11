@@ -11,45 +11,23 @@ var phonegap = require('../../lib/main'),
  * Specification: $ phonegap version
  */
 
-describe('phonegap --version', function() {
+describe('phonegap --recipe', function() {
     beforeEach(function() {
         cli = new CLI();
         argv = ['node', '/usr/local/bin/phonegap'];
-        spyOn(process.stdout, 'write');
-        spyOn(process.stderr, 'write');
-        spyOn(phonegap, 'version').andReturn({
-            npm: '2.8.0-0.10.6',
-            module: '0.10.6',
-            phonegap: '2.8.0'
-        });
+        spyOn(phonegap, 'create');
+        spyOn(phonegap, 'recipe');
     });
 
-    describe('$ phonegap help', function() {
-        it('outputs info on the version command', function() {
-            cli.argv(argv.concat(['help']));
-            expect(process.stdout.write.mostRecentCall.args[0])
-                .toMatch(/Commands:[\w\W]*\s+version/i);
+    describe('$ phonegap create', function() {
+        it('should not call recipe if not specified', function() {
+            cli.argv(argv.concat(['create', 'example', 'com.example', 'example']));
+            expect(phonegap.create).toHaveBeenCalled();
+            expect(phonegap.recipe).not.toHaveBeenCalled();
         });
-    });
 
-    describe('$ phonegap version', function() {
-        it('should output with the format x.x.x', function() {
-            cli.argv(argv.concat(['version']));
-            expect(process.stdout.write.mostRecentCall.args[0]).toMatch(/\d+\.\d+\.\d+/);
-        });
-    });
+        it('', function() {
 
-    describe('$ phonegap --version', function() {
-        it('should output with the format x.x.x', function() {
-            cli.argv(argv.concat(['--version']));
-            expect(process.stdout.write.mostRecentCall.args[0]).toMatch(/\d+\.\d+\.\d+/);
-        });
-    });
-
-    describe('$ phonegap -v', function() {
-        it('should output with the format x.x.x', function() {
-            cli.argv(argv.concat(['-v']));
-            expect(process.stdout.write.mostRecentCall.args[0]).toMatch(/\d+\.\d+\.\d+/);
         });
     });
 });
