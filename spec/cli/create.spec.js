@@ -68,50 +68,50 @@ describe('phonegap help create', function() {
  * Specification: $ phonegap create <path>
  */
 
-describe('phonegap create <path>', function() {
+describe('phonegap create ', function() {
+    var testargs;
+    
     beforeEach(function() {
         cli = new CLI();
         argv = ['node', '/usr/local/bin/phonegap'];
         spyOn(process.stdout, 'write');
         spyOn(phonegap, 'create');
+
+        testargs = {
+            path: './my-app',
+            id: 'com.example.app',
+            name: 'My App',
+            recipe: false 
+        };
     });
 
-    describe('$ phonegap create ./my-app', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: undefined,
-                name: undefined
-            },
-            jasmine.any(Function));
-        });
+    it('should attempt to create the project with specified <path>', function() {
+        // setup expected arguments to phonegap.create
+        testtargs.id = undefined;    
+        testtargs.name = undefined;
+ 
+        cli.argv(argv.concat(['create', testtargs.path]));
+        
+        expect(phonegap.create).toHaveBeenCalledWith(testtargs, jasmine.any(Function));
     });
 
-    describe('$ phonegap create ./my-app com.example.app', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', 'com.example.app']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: undefined
-            },
-            jasmine.any(Function));
-        });
+    it('should attempt to create the project with specified <path> <id>', function() {
+        // setup expected arguments to phonegap.create
+        testargs.name = undefined;
+
+        cli.argv(argv.concat(['create', testargs.path, testargs.id]));
+
+        expect(phonegap.create).toHaveBeenCalledWith(testargs, jasmine.any(Function));
     });
 
-    describe('$ phonegap create ./my-app com.example.app "My App"', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', 'com.example.app', 'My App']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: 'My App'
-            },
-            jasmine.any(Function));
-        });
+    it('should try to create the project with specified <path> <id> <name>', function() {
+
+        cli.argv(argv.concat(['create', testargs.path, testargs.id, testargs.name]));
+
+        expect(phonegap.create).toHaveBeenCalledWith(testargs, jasmine.any(Function));
     });
 
+/*
     describe('$ phonegap create ./my-app --id com.example.app', function() {
         it('should try to create the project', function() {
             cli.argv(argv.concat(['create', './my-app', '--id', 'com.example.app']));
@@ -191,4 +191,5 @@ describe('phonegap create <path>', function() {
             jasmine.any(Function));
         });
     });
+*/
 });
