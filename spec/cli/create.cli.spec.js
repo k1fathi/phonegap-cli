@@ -77,7 +77,7 @@ console.log(stdout.mostRecentCall.args);
 
 describe('phonegap create <path>', function() {
     var cli,
-        c;
+        argv;
         
 
     beforeEach(function() {
@@ -85,16 +85,7 @@ describe('phonegap create <path>', function() {
         argv = ['node', '/usr/local/bin/phonegap'];
 //        spyOn(process.stdout, 'write');
         spyOn(cli, 'create');
-        fork = jasmine.createSpy();
     });
-/**
-    describe('$ phonegap create ./my-app', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app']));
-            expect(fork).toHaveBeenCalledWith(jasmine.any(Object),jasmine.any(Object));
-        });
-    });
-**/
 
     /**
      *
@@ -102,24 +93,19 @@ describe('phonegap create <path>', function() {
     describe('$ phonegap create ./my-app com.example.app', function() {
         beforeEach(function() {
             subcommands = ['create', './my-app', 'com.example.app'];
+            argv = argv.concat(subcommands);
         });
  
-        it('should call the correct component script', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalled();
-        });
-        
         it('should call the correct component script with unmodified command arguments', function() {
             cli.argv(argv.concat(subcommands));
             expect(cli.create).toHaveBeenCalled();
             expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
-            expect(cli.create.argsForCall[0][0].raw).toEqual(argv.concat(subcommands));
+            expect(cli.create.argsForCall[0][0]).toEqual(argv.concat(subcommands));
         });
         
         it('should call the correct component script with unmodified command arguments and a callback function if provided', function() {
-            var cmds = ['create', './my-app', 'com.example.app'],
-                cb = function () {};
-            cli.argv(argv.concat(cmds), cb);
+            var cb = function () {};
+            cli.argv(argv, cb);
             expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), cb);
         });
     });

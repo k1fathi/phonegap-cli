@@ -81,6 +81,7 @@ describe('phonegap create <path>', function() {
     var cli;
     var cb;
 
+
     beforeEach(function() {
         cli = new CLI();
         cb = jasmine.createSpy();
