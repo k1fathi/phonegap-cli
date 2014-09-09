@@ -3,7 +3,9 @@
  */
 
 var phonegap = require('../../lib/main'),
+    path = require('path'),
     CLI = require('../../lib/cli'),
+    child_process = require('child_process'),
     argv,
     cli,
     stdout,
@@ -76,160 +78,84 @@ console.log(stdout.mostRecentCall.args);
  */
 
 describe('phonegap create <path>', function() {
-    var cli,
-        c;
-        
+    var cli;
+    var cb;
 
     beforeEach(function() {
         cli = new CLI();
-        argv = ['node', '/usr/local/bin/phonegap'];
-//        spyOn(process.stdout, 'write');
-        spyOn(cli, 'create');
-        fork = jasmine.createSpy();
+        cb = jasmine.createSpy();
+        baseargv = ['node', '/usr/local/bin/phonegap'];
+        child = createSpyObj('child', ['on','send']);
+        fork = spyOn(child_process,'fork').andReturn(child); 
+
     });
-/**
-    describe('$ phonegap create ./my-app', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app']));
-            expect(fork).toHaveBeenCalledWith(jasmine.any(Object),jasmine.any(Object));
-        });
-    });
-**/
 
     /**
      *
      */
     describe('$ phonegap create ./my-app com.example.app', function() {
+        var argv;
         beforeEach(function() {
             subcommands = ['create', './my-app', 'com.example.app'];
+            argv = baseargv.concat(subcommands);
         });
  
-        it('should call the correct component script', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalled();
+        it('should attempt to spawn a child by forking the process', function() {
+            cli.create(argv, cb);
+            expect(fork).toHaveBeenCalled();
+        });
+  
+        it('should attempt to spawn child process with unmodified command line arguments ', function() {
+            cli.create(argv, cb);
+            expect(fork.mostRecentCall.args[1]).toEqual(argv);
+        });
+    });
+
+    /**
+     *
+     */
+    describe('$ phonegap create <path>', function() {
+        var argv;
+        beforeEach(function() {
+            subcommands = ['create', './my-app', 'com.example.app'];
+            argv = baseargv.concat(subcommands);
+        });
+ 
+        it('should attempt to spawn a child by forking the process', function() {
+            cli.create(argv, cb);
+            expect(fork).toHaveBeenCalled();
+        });
+  
+        it('should attempt to spawn child process with unmodified command line arguments ', function() {
+            cli.create(argv, cb);
+            expect(fork.mostRecentCall.args[1]).toEqual(argv);
         });
         
-        it('should call the correct component script with unmodified command arguments', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalled();
-            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
-            expect(cli.create.argsForCall[0][0].raw).toEqual(argv.concat(subcommands));
+        it('should send once', function() {
+            cli.create(argv, cb);
+            expect(child.send).toHaveBeenCalled();
+            expect(child.send.callCount).toBe(1);
+        });
+
+        it('should send raw arguments', function() {
+            cli.create(argv, cb);
+            expect(child.send).toHaveBeenCalledWith(argv);
         });
         
         it('should call the correct component script with unmodified command arguments and a callback function if provided', function() {
-            var cmds = ['create', './my-app', 'com.example.app'],
-                cb = function () {};
-            cli.argv(argv.concat(cmds), cb);
-            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), cb);
-        });
-    });
-
-
-    /**
-     *
-     */
-    describe('$ phonegap create ./my-app com.example.app "My App"', function() {
-        var cb;
-        beforeEach(function() {
-            subcommands = ['create', './my-app', 'com.example.app', 'My App'];
-            cb = function () {};
-        });
-        
-        it('should call the correct component script', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalled();
+            cli.create(argv, cb);
+            expect(child.on).toHaveBeenCalled();
+            expect(child.on.callCount).toBe(2);
         });
 
-       it('should call the correct component script', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
+        it('should register a message event listener with a callback function on the child', function() {
+            cli.create(argv, cb);
+            expect(child.on).toHaveBeenCalledWith('message',jasmine.any(Function));
         });
 
-       it('should call the correct component script', function() {
-            cli.argv(argv.concat(subcommands),cb);
-            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), cb);
-        });
-
-    });
-
-    describe('$ phonegap create ./my-app --id com.example.app', function() {
-        beforeEach(function() {
-            subcommands = ['create', './my-app', '--id', 'com.example.app'];
-        });
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object),jasmine.any(Function));
-        });
-    });
-
-
-/*
-    describe('$ phonegap create ./my-app -i com.example.app', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', '-i', 'com.example.app']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: undefined
-            },
-            jasmine.any(Function));
-        });
-    });
-
-    describe('$ phonegap create ./my-app --name "My App"', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', '--name', 'My App']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: undefined,
-                name: "My App"
-            },
-            jasmine.any(Function));
-        });
-    });
-
-    describe('$ phonegap create ./my-app -n "My App"', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', '-n', 'My App']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: undefined,
-                name: "My App"
-            },
-            jasmine.any(Function));
-        });
-    });
-
-    describe('$ phonegap create ./my-app --id com.example.app --name "My App"', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat([
-                'create', './my-app',
-                '--id', 'com.example.app',
-                '--name', 'My App'
-            ]));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: 'My App'
-            },
-            jasmine.any(Function));
-        });
-    });
-*/
-    /**
-     *
-     */
-    describe('$ phonegap create ./my-app -i com.example.app -n "My App"', function() {
-        beforeEach(function() {
-            subcommands = [
-                'create', './my-app',
-                '-i', 'com.example.app',
-                '-n', 'My App'];
-        });
-
-        it('should try to create the project', function() {
-            cli.argv(argv.concat(subcommands));
-            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
+        it('should register an exit event listener with a callback function on the child', function() {
+            cli.create(argv, cb);
+            expect(child.on).toHaveBeenCalledWith('exit',jasmine.any(Function));
         });
     });
 });
