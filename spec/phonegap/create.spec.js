@@ -82,7 +82,7 @@ describe('PhoneGap create child script', function() {
     it('should try to create a project with custom values', function() {
         options.id = 'com.example.app';
         options.name = 'My App';
-        phonegap.create(options);
+        Create(options);
         expect(cordova.create).toHaveBeenCalledWith(
             options.path,
             options.id,
