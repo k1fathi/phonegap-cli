@@ -3,7 +3,7 @@
  */
 
 var PhoneGap = require('../../lib/phonegap'),
-    CreateCommand = require('../../lib/phonegap/create'),
+    Create = require('../../lib/phonegap/create'),
     cordova = require('cordova-lib').cordova,
     shell = require('shelljs'),
     phonegap,
@@ -21,8 +21,8 @@ describe('PhoneGap create child script', function() {
 
         process.send = jasmine.createSpy();
 //        spyOn(phonegap, 'version').andReturn({ phonegap: '2.8.0' });
-//        spyOn(cordova, 'create');
-//        spyOn(cordova, 'config');
+        spyOn(cordova, 'create');
+        spyOn(cordova, 'config');
 //        spyOn(shell, 'rm');
 //        spyOn(shell, 'cp');
 
@@ -31,48 +31,46 @@ describe('PhoneGap create child script', function() {
 
     it('should require options', function() {
         expect(function() {
-            CreateCommand();
+            Create();
         }).toThrow();
     });
 
     it('should require options to be defined', function() {
         expect(function() {
-            CreateCommand(undefined);
+            Create(undefined);
         }).toThrow();
     
         expect(function() {
-            CreateCommand(null);
+            Create(null);
         }).toThrow();
     });
 
     it('should require options.path', function() {
         expect(function() {
             options.path = undefined;
-            phonegap.create(options, function(e) {});
+            Create(options);
         }).toThrow();
     });
 
-
-/*
     it('should require accept a numeric path', function() {
         expect(function() {
             options.path = 123;
-            phonegap.create(options, function(e) {});
+            Create(options, function(e) {});
         }).not.toThrow();
     });
 
     it('should not require callback', function() {
         expect(function() {
-            phonegap.create(options);
+            Create(options);
         }).not.toThrow();
     });
 
-    it('should return itself', function() {
-        expect(phonegap.create(options)).toEqual(phonegap);
+    it('should return true', function() {
+        expect(Create(options)).toEqual(true);
     });
 
     it('should try to create a project with default values', function() {
-        phonegap.create(options);
+        Create(options);
         expect(cordova.create).toHaveBeenCalledWith(
             options.path,
             'com.phonegap.helloworld',
@@ -92,7 +90,7 @@ describe('PhoneGap create child script', function() {
             jasmine.any(Function)
         );
     });
-
+/*
     describe('successfully created a project', function() {
         beforeEach(function() {
             cordova.create.andCallFake(function(path, id, name, callback) {
