@@ -12,7 +12,7 @@ var phonegap = require('../../lib/main'),
 /*
  * Specification: $ phonegap help create
  */
-
+/*
 describe('phonegap help create', function() {
     var subcommands;
 
@@ -96,38 +96,32 @@ describe('phonegap create <path>', function() {
     });
 **/
 
-
+    /**
+     *
+     */
     describe('$ phonegap create ./my-app com.example.app', function() {
+        beforeEach(function() {
+            subcommands = ['create', './my-app', 'com.example.app'];
+        });
+ 
         it('should call the correct component script', function() {
-            var cmds = ['create', './my-app', 'com.example.app'];
-            cli.argv(argv.concat(cmds));
+            cli.argv(argv.concat(subcommands));
             expect(cli.create).toHaveBeenCalled();
         });
-
-
-        /**
-         *
-         */
+        
         it('should call the correct component script with unmodified command arguments', function() {
-            var cmds = ['create', './my-app', 'com.example.app'];
-            cli.argv(argv.concat(cmds));
+            cli.argv(argv.concat(subcommands));
             expect(cli.create).toHaveBeenCalled();
-            expect(cli.create).toHaveBeenCalledWith(cmds, jasmine.any(Function));
+            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
+            expect(cli.create.argsForCall[0][0].raw).toEqual(argv.concat(subcommands));
         });
-
-
-        /**
-         *
-         */
+        
         it('should call the correct component script with unmodified command arguments and a callback function if provided', function() {
             var cmds = ['create', './my-app', 'com.example.app'],
                 cb = function () {};
             cli.argv(argv.concat(cmds), cb);
-            expect(cli.create).toHaveBeenCalledWith(cmds, cb);
+            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), cb);
         });
-
-
-
     });
 
 
@@ -135,51 +129,41 @@ describe('phonegap create <path>', function() {
      *
      */
     describe('$ phonegap create ./my-app com.example.app "My App"', function() {
+        var cb;
         beforeEach(function() {
             subcommands = ['create', './my-app', 'com.example.app', 'My App'];
+            cb = function () {};
         });
-    /*it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', 'com.example.app', 'My App']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: 'My App'
-            },
-            jasmine.any(Function));
-      $  });
-*/
+        
         it('should call the correct component script', function() {
-            var cmds = ['create', './my-app', 'com.example.app'];
-            cli.argv(argv.concat(cmds));
+            cli.argv(argv.concat(subcommands));
             expect(cli.create).toHaveBeenCalled();
         });
 
        it('should call the correct component script', function() {
-            var cmds = ['create', './my-app', 'com.example.app'];
-            cli.argv(argv.concat(cmds));
-            expect(cli.create).toHaveBeenCalled();
+            cli.argv(argv.concat(subcommands));
+            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
         });
 
        it('should call the correct component script', function() {
-            var cmds = ['create', './my-app', 'com.example.app'];
-            cli.argv(argv.concat(cmds));
-            expect(cli.create).toHaveBeenCalled();
+            cli.argv(argv.concat(subcommands),cb);
+            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), cb);
         });
 
     });
-/*
+
     describe('$ phonegap create ./my-app --id com.example.app', function() {
+        beforeEach(function() {
+            subcommands = ['create', './my-app', '--id', 'com.example.app'];
+        });
         it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', '--id', 'com.example.app']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: undefined
-            },
-            jasmine.any(Function));
+            cli.argv(argv.concat(subcommands));
+            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object),jasmine.any(Function));
         });
     });
 
+
+/*
     describe('$ phonegap create ./my-app -i com.example.app', function() {
         it('should try to create the project', function() {
             cli.argv(argv.concat(['create', './my-app', '-i', 'com.example.app']));
@@ -231,21 +215,21 @@ describe('phonegap create <path>', function() {
             jasmine.any(Function));
         });
     });
-
+*/
+    /**
+     *
+     */
     describe('$ phonegap create ./my-app -i com.example.app -n "My App"', function() {
-        it('should try to create the project', function() {
-            cli.argv(argv.concat([
+        beforeEach(function() {
+            subcommands = [
                 'create', './my-app',
                 '-i', 'com.example.app',
-                '-n', 'My App'
-            ]));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: 'My App'
-            },
-            jasmine.any(Function));
+                '-n', 'My App'];
+        });
+
+        it('should try to create the project', function() {
+            cli.argv(argv.concat(subcommands));
+            expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
         });
     });
-**/
 });
