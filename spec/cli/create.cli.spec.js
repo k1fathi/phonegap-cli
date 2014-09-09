@@ -129,6 +129,7 @@ describe('phonegap create <path>', function() {
        it('should call the correct component script', function() {
             cli.argv(argv.concat(subcommands));
             expect(cli.create).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
+            expect(cli.create.argsForCall[0][0]).toEqual(argv.concat(subcommands));
         });
 
        it('should call the correct component script', function() {
