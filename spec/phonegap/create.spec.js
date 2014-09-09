@@ -3,7 +3,7 @@
  */
 
 var PhoneGap = require('../../lib/phonegap'),
-    CreateCommand = require('../../lib/phonegap/create');
+    CreateCommand = require('../../lib/phonegap/create'),
     cordova = require('cordova-lib').cordova,
     shell = require('shelljs'),
     phonegap,
@@ -13,11 +13,13 @@ var PhoneGap = require('../../lib/phonegap'),
  * Specification: phonegap.create(options, [callback])
  */
 
-describe('phonegap.create(options, [callback])', function() {
+describe('PhoneGap create child script', function() {
     beforeEach(function() {
         options = {
             path: '/some/path/to/app/www'
         };
+
+        process.send = jasmine.createSpy();
 //        spyOn(phonegap, 'version').andReturn({ phonegap: '2.8.0' });
 //        spyOn(cordova, 'create');
 //        spyOn(cordova, 'config');
@@ -28,19 +30,29 @@ describe('phonegap.create(options, [callback])', function() {
     });
 
     it('should require options', function() {
-        options = undefined;
-        expect(CreateCommand()).toThrow();
-        expect(CreateCommand(undefined)).toThrow();
-        expect(CreateCommand(options)).toThrow();
+        expect(function() {
+            CreateCommand();
+        }).toThrow();
     });
 
-   /* 
+    it('should require options to be defined', function() {
+        expect(function() {
+            CreateCommand(undefined);
+        }).toThrow();
+    
+        expect(function() {
+            CreateCommand(null);
+        }).toThrow();
+    });
+
     it('should require options.path', function() {
         expect(function() {
             options.path = undefined;
             phonegap.create(options, function(e) {});
         }).toThrow();
     });
+
+
 /*
     it('should require accept a numeric path', function() {
         expect(function() {
