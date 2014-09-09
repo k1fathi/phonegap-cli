@@ -3,6 +3,7 @@
  */
 
 var PhoneGap = require('../lib/phonegap'),
+    fs = require('fs');
     phonegap = new PhoneGap();
 
 /*!
@@ -18,8 +19,14 @@ describe('phonegap', function() {
         expect(phonegap.build).toEqual(jasmine.any(Function));
     });
 
-    it('should define phonegap.create', function() {
-        expect(phonegap.create).toEqual(jasmine.any(Function));
+    /**
+     * tests for presence of script in distribution
+     */
+    it('should include the phonegap create script', function() {
+        var createscript; 
+
+        createscript = require('../lib/phonegap/create.js');
+        expect(createscript).toBeDefined();
     });
 
     it('should define phonegap.local', function() {
