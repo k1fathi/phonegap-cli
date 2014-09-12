@@ -20,15 +20,15 @@ describe('PhoneGap create child script', function() {
         };
 
         process.send = jasmine.createSpy();
-//        spyOn(phonegap, 'version').andReturn({ phonegap: '2.8.0' });
+        spyOn(phonegap, 'version').andReturn({ phonegap: '2.8.0' });
         spyOn(cordova, 'create');
         spyOn(cordova, 'config');
-//        spyOn(shell, 'rm');
-//        spyOn(shell, 'cp');
+        spyOn(shell, 'rm');
+        spyOn(shell, 'cp');
 
         spyOn(process.stderr, 'write');
     });
-
+/*
     it('should require options', function() {
         expect(function() {
             Create();
@@ -90,22 +90,28 @@ describe('PhoneGap create child script', function() {
             jasmine.any(Function)
         );
     });
-/*
+
     describe('successfully created a project', function() {
         beforeEach(function() {
+            options = {
+                path : '/some/path/',
+                id : 'org.spec.test',
+                name : 'TestTest'
+            };
             cordova.create.andCallFake(function(path, id, name, callback) {
                 callback(null);
             });
         });
 
         it('should trigger called without an error', function(done) {
-            phonegap.create(options, function(e) {
-                expect(e).toBeNull();
-                done();
-            });
+            expect(function() {
+                Create(options);
+           }).not.toThrow();
+            expect(cordova.create).toHaveBeenCalled();
         });
     });
-
+*/
+/*
     describe('failed to create a project', function() {
         beforeEach(function() {
             cordova.create.andCallFake(function(path, id, name, callback) {
