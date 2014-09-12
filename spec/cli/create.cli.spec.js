@@ -12,7 +12,6 @@ var phonegap = require('../../lib/main'),
 /*
  * Specification: $ phonegap help create
  */
-/*
 describe('phonegap help create', function() {
     var subcommands;
 
@@ -34,11 +33,7 @@ describe('phonegap help create', function() {
     describe('$ phonegap create', function() {
         it('should output usage info', function() {
             cli.argv(argv.concat(['create']));
-            expect(stdout.mostRecentCall);
-console.log('==================================================');
-        console.log(stdout.mostRecentCall.args);
-console.log(stdout.mostRecentCall.args);
-//            expect(stdout.mostRecentCall.args[0]).toMatch(/usage: [\S]+ create/i);
+            expect(stdout.mostRecentCall.args[0]).toMatch(/usage: [\S]+ create/i);
         });
     });
 
