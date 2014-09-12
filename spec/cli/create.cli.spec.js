@@ -110,7 +110,6 @@ describe('phonegap create <path>', function() {
         });
     });
 
-
     /**
      *
      */
@@ -139,6 +138,9 @@ describe('phonegap create <path>', function() {
 
     });
 
+    /**
+     *
+     */
     describe('$ phonegap create ./my-app --id com.example.app', function() {
         beforeEach(function() {
             subcommands = ['create', './my-app', '--id', 'com.example.app'];
@@ -150,31 +152,29 @@ describe('phonegap create <path>', function() {
     });
 
 
-/*
     describe('$ phonegap create ./my-app -i com.example.app', function() {
+        beforeEach(function() {
+            subcommands = ['create', './my-app', '-i', 'com.example.app'];
+        });
         it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', '-i', 'com.example.app']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: 'com.example.app',
-                name: undefined
-            },
-            jasmine.any(Function));
+            var fullargs = argv.concat(subcommands);
+            cli.argv(argv.concat(subcommands));
+            expect(cli.create).toHaveBeenCalledWith(fullargs, jasmine.any(Function));
         });
     });
+
 
     describe('$ phonegap create ./my-app --name "My App"', function() {
         it('should try to create the project', function() {
-            cli.argv(argv.concat(['create', './my-app', '--name', 'My App']));
-            expect(phonegap.create).toHaveBeenCalledWith({
-                path: './my-app',
-                id: undefined,
-                name: "My App"
-            },
-            jasmine.any(Function));
+            var fullargs = argv.concat(['create', './my-app', '--name', 'My App']);
+
+            cli.argv(fullargs);
+            expect(cli.create).toHaveBeenCalledWith(fullargs, jasmine.any(Function));
         });
     });
 
+
+/*
     describe('$ phonegap create ./my-app -n "My App"', function() {
         it('should try to create the project', function() {
             cli.argv(argv.concat(['create', './my-app', '-n', 'My App']));
