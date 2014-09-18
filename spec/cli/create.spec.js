@@ -85,7 +85,7 @@ describe('phonegap create <path>', function() {
     beforeEach(function() {
         cli = new CLI();
         cb = jasmine.createSpy();
-        baseargv = ['node', '/usr/local/bin/phonegap'];
+        baseargv = ['node', '/usr/local/bin/phonegap', 'create'];
         child = createSpyObj('child', ['on','send']);
         fork = spyOn(child_process,'fork').andReturn(child); 
 
@@ -97,7 +97,7 @@ describe('phonegap create <path>', function() {
     describe('$ phonegap create ./my-app com.example.app', function() {
         var argv;
         beforeEach(function() {
-            subcommands = ['create', './my-app', 'com.example.app'];
+            subcommands = ['./my-app', 'com.example.app'];
             argv = baseargv.concat(subcommands);
         });
  
@@ -118,7 +118,7 @@ describe('phonegap create <path>', function() {
     describe('$ phonegap create <path>', function() {
         var argv;
         beforeEach(function() {
-            subcommands = ['create', './my-app', 'com.example.app'];
+            subcommands = ['./my-app', 'com.example.app'];
             argv = baseargv.concat(subcommands);
         });
  
@@ -140,7 +140,7 @@ describe('phonegap create <path>', function() {
 
         it('should send raw arguments', function() {
             cli.create(argv, cb);
-            expect(child.send).toHaveBeenCalledWith(argv);
+            expect(child.send).toHaveBeenCalledWith(subcommands);
         });
         
         it('should call the correct component script with unmodified command arguments and a callback function if provided', function() {
