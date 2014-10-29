@@ -40,7 +40,8 @@
         "shelljs": "0.1.4"
     },
     "devDependencies": {
-        "jasmine-node": "2.0.1",
+        "tap": "x.x.x",
+        "sinon": "x.x.x",
         "chdir": "0.0.x"
     },
     "optionalDependencies": {
