@@ -1,6 +1,7 @@
 var shell = require('shelljs'),
     path = require('path'),
     bin = 'node ' + '"' + path.resolve(path.join(__dirname, '..', 'bin', 'phonegap.js')) + '"';
+    bin = 'node ' + path.resolve(path.join(__dirname, '..', 'bin', 'phonegap.js'));
 
 describe('$ phonegap [options] commands', function() {
     beforeEach(function() {
