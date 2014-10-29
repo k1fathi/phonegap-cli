@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-var CLI = require('../lib/cli');
+var PG_CLI = require('../lib/phonegapcli');
 
 /*!
  * Run the command-line client.
  */
 
-var cli = new CLI().argv(process.argv);
+var cli = new PG_CLI().argv(process.argv);
