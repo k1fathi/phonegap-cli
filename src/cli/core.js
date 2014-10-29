@@ -4,7 +4,7 @@
 var mini = require('minimist');
 
 var phonegap = require('../phonegap');
-var phonegapify = require('../phonegapify');
+var phonegapify = require('./phonegapify');
 
 
 /**

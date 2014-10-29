@@ -43,6 +43,9 @@ function PhoneGap() {
     this.mode({ verbose: false });
 }
 
+PhoneGap.subcommands = [];
+
+
 util.inherits(PhoneGap, events.EventEmitter);
 
 /*!
