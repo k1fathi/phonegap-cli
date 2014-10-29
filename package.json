@@ -15,7 +15,7 @@
         "phonegap/build"
     ],
     "preferGlobal": "true",
-    "main": "./lib/main.js",
+    "main": "./src/main.js",
     "bin": {
         "phonegap": "./bin/phonegap.js"
     },
