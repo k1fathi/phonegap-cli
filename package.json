@@ -20,7 +20,7 @@
         "phonegap": "./bin/phonegap.js"
     },
     "scripts": {
-        "test": "jasmine-node --color spec"
+        "test": "tap --color spec"
     },
     "engineStrict": "true",
     "engines": {
@@ -42,6 +42,7 @@
     "devDependencies": {
         "tap": "x.x.x",
         "sinon": "x.x.x",
+        "rewire": "x.x.x",
         "chdir": "0.0.x"
     },
     "optionalDependencies": {
