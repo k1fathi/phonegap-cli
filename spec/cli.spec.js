@@ -4,6 +4,7 @@ var shell = require('shelljs'),
     bin = 'node ' + path.resolve(path.join(__dirname, '..', 'bin', 'phonegap.js'));
 
 describe('$ phonegap [options] commands', function() {
+
     beforeEach(function() {
         spyOn(process.stdout, 'write');
         spyOn(process.stderr, 'write');
@@ -28,6 +29,7 @@ describe('$ phonegap [options] commands', function() {
         var process = shell.exec(bin + ' --version', { silent: true });
         expect(process.code).toEqual(0);
     });
+
 
     describe('on an error', function() {
         it('should have non-zero exit code', function() {
