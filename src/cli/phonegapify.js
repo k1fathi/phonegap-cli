@@ -4,7 +4,7 @@
 var path = require('path');
 var spawn = require('child_process').spawn;
 
-var cdvpath = path.join( __dirname, '..', '..', 'node_modules', 'cordova');
+var cordovapath = path.join( __dirname, '..', '..', 'node_modules', 'cordova');
 
 /**
  * PhoneGapify
@@ -15,10 +15,12 @@ var cdvpath = path.join( __dirname, '..', '..', 'node_modules', 'cordova');
 function PhoneGapifyModule (argv, callback) {
     var originalWD = process.cwd();
 
-    process.chdir(cdvpath);
-
-    spawn('cordova', argv, {cwd: originalWD}); 
-    
+    try {
+        process.chdir(cordovapath);
+    } catch (e) {
+        console.log(e);
+    }
+    spawn('cordova', argv, {cwd: originalWD, stdio:'inherit'}); 
 };
 
 
