@@ -36,14 +36,14 @@ function CLICore(argv, callback) {
     var parsed,
         command;
 
-    phonegapify(parsed, callback)
     callback = callback || function () {};
 
     // slice off 'node */phonegap'
     parsed = mini(argv.slice(2), parseOptions);
-    if (/*phonegap.subcommands.indexOf(parsed._[0]) > -1 && typeof phonegap[parsed._[0]] === 'function'*/false) {
+    if (phonegap.subcommands.indexOf(parsed._[0]) > -1 && typeof phonegap[parsed._[0]] === 'function') {
         // execute phonegap implementation of the subcommand    
     } else {
+        phonegapify(parsed, callback);
     }
 };
 
