@@ -54,7 +54,7 @@ function PhoneGap() {
     this.mode({ verbose: false });
 }
 
-PhoneGap.subcommands = [];
+PhoneGap.subcommands = ['serve', 'help', 'version' ];
 
 
 util.inherits(PhoneGap, events.EventEmitter);
