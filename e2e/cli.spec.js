@@ -1,25 +1,34 @@
-var shell = require('shelljs'),
-    path = require('path'),
-    bin = 'node ' + path.resolve(path.join(__dirname, '..', 'bin', 'phonegap.js'));
+var test = require('tap').test;
+var sinon = require('sinon');
+var rewire = require('sinon');
 
-describe('$ phonegap [options] commands', function() {
-    beforeEach(function() {
-        spyOn(process.stdout, 'write');
-        spyOn(process.stderr, 'write');
-    });
+var shell = require('shelljs');
+var path = require('path');
+var bin = 'node ' + path.resolve(path.join(__dirname, '..', 'bin', 'phonegap.js'));
 
-    it('should support no arguments', function() {
-        var process = shell.exec(bin + '', { silent: true });
-        expect(process.output).toMatch('Usage:');
-    });
+function beforeEach() {
+    sinon.spy(process.stdout, 'write');
+    sinon.spy(process.stderr, 'write');
+};
 
-    it('should support commands', function() {
-        var process = shell.exec(bin + ' version', { silent: true });
-        expect(process.output).toMatch(/^\w+\.\w+\.\w+/);
-    });
 
-    it('should support options', function() {
-        var process = shell.exec(bin + ' --version', { silent: true });
-        expect(process.output).toMatch(/^\w+\.\w+\.\w+/);
-    });
+test('should suppport no arguments', function(t) {
+    var process = shell.exec(bin + '', { silent: true });
+
+    t.plan(1);
+    t.equal(process.output, 'Usage:', 'should support no arguments');
+});
+
+test('should support version command', function(t) {
+    var process = shell.exec(bin + '', { silent: true });
+
+    t.plan(1);
+    t.equal(process.output, /^\w+\.\w+\.\w+/, 'should support commands');
+});
+
+test('should support version as option', function(t) {
+    var process = shell.exec(bin + ' --version', { silent: true });
+
+    t.plan(1);
+    t.equal(process.output, /^\w+\.\w+\.\w+/, 'should support commands');
 });
