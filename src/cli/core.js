@@ -43,7 +43,7 @@ function CLICore(argv, callback) {
     if (phonegap.subcommands.indexOf(parsed._[0]) > -1 && typeof phonegap[parsed._[0]] === 'function') {
         // execute phonegap implementation of the subcommand    
     } else {
-        phonegapify(parsed, callback);
+        phonegapify(argv.slice(2), callback);
     }
 };
 
