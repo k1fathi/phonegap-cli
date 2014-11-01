@@ -35,8 +35,9 @@ test("PhoneGapify Module", function (t) {
         phonegapify(cmd_argv, callback);
 
         // then
-        t.equal(chdirspy.callCount, 1, "");
-        t.equal(chdirspy.args[0][0], phonegapify.__get__('cordovapath'),"");
+
+        t.equal(chdirspy.args[0][0], phonegapify.__get__('cordovapath'),"should change the worknig directory");
+        t.equal(chdirspy.callCount, 1, "should change the working directory exactly once");
     });
 
     beforeEach();
