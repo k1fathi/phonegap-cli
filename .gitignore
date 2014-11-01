@@ -9,4 +9,4 @@
 npm-debug.log
 
 # tests
-/e2e/staged
+*/stage
