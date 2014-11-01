@@ -18,29 +18,35 @@ function beforeEach() {
 };
 
 var base_argv = [ 'node', 'something/something/phonegap' ];
+var cmd_argv = [ 'create', 'path/to/app' ];
+
 
 beforeEach();
 test("PhoneGapify Module", function (t) {
-    t.plan(2);
+    t.plan(3);
 
     t.type(phonegapify, 'function', "should export a function");
 
     beforeEach();
-    t.test("should call phonegapify module if command not found", function (t) {
-        t.plan(3);
+    t.test("", function (t) {
+        t.plan(2);
 
         // given        
-        Core(base_argv, callback);
+        phonegapify(cmd_argv, callback);
 
         // then
-        t.equal(phonegapispy.callCount, 1, "phonegapispy should be executed exactly once");
-
-        //  
-        t.type(phonegapispy.args[0][1], 'function', "phonegapispy should be executed with a callback function");
-
-        // 
-        t.equal(callback.callCount, 1, "callback should be executed exactly once");
-
+        t.equal(chdirspy.callCount, 1, "");
+        t.equal(chdirspy.args[0][0], phonegapify.__get__('cordovapath'),"");
     });
 
+    beforeEach();
+    t.test("", function (t) {
+        t.plan(1);
+
+        // given        
+        phonegapify(cmd_argv, callback);
+
+        // then
+        t.equal(chdirspy.callCount, 2, "");
+    });
 });
