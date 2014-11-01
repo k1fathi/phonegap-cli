@@ -4,17 +4,14 @@ var sinon = require('sinon');
 var rewire = require('rewire');
 
 //
-var phonegapify = rewire('../../src/cli/phonegapify');
-
+var phonegapify = rewire('../../lib/cli/phonegapify');
 
 
 var chdirspy = sinon.spy();
 var callback = sinon.spy();
 
 function beforeEach() {
-    
     phonegapify.__set__('process.chdir', chdirspy);
-    
 };
 
 var base_argv = [ 'node', 'something/something/phonegap' ];

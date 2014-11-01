@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var core = require('../src/cli/core');
+var core = require('../lib/cli/core');
 
 /*!
  * Run the command-line client.
