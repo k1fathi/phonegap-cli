@@ -22,10 +22,10 @@ var cordovapath = path.join('..', 'node_modules', 'cordova');
 
 
 /**
- * TESTS
+ * Tests
  */
 test("phonegap create", function (t) {
-    t.plan(3);
+    t.plan(4);
 
     /* phonegap create */
     t.test("when invoked with no arguments", function (t) {
@@ -91,6 +91,15 @@ test("phonegap create", function (t) {
             });
         });
     });
+
+    t.test("with nonempty directory at path", function (t) {
+        t.plan(0);
+        var origwd = process.cwd();
+        stage(['create', projpath], function () {
+            child = spawn('phonegap', ['create', projpath], {cwd: origwd, stdio: 'inherit'});
+        });
+
+    }); 
 });
 
 
@@ -111,7 +120,6 @@ function teardown (callback) {
  */
 function stage (args, cb) {
     var origwd = process.cwd();
-
     async.series([
         teardown,
         function (callback) {
