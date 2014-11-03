@@ -43,6 +43,8 @@
         "tap": "x.x.x",
         "sinon": "x.x.x",
         "rewire": "x.x.x",
+        "async" : "x.x.x",
+        "fs.extra" : "1.2.1",
         "chdir": "0.0.x"
     },
     "optionalDependencies": {
