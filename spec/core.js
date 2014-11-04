@@ -2,7 +2,7 @@ var test = require('tap').test;
 var sinon = require('sinon');
 var rewire = require('rewire');
 
-var Core = rewire('../../lib/cli/core');
+var Core = rewire('../lib/cli/core');
 
 
 var phonegapispy = sinon.stub().callsArg(1);
