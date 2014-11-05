@@ -30,14 +30,9 @@ test("CLI Core Module", function (t) {
         Core(base_argv, callback);
 
         // then
-        t.equal(phonegapispy.callCount, 1, "phonegapispy should be executed exactly once");
-
-        //  
+        t.ok(phonegapispy.calledOnce, "phonegapispy should be executed exactly once");
         t.type(phonegapispy.args[0][1], 'function', "phonegapispy should be executed with a callback function");
-
-        // 
-        t.equal(callback.callCount, 1, "callback should be executed exactly once");
-
+        t.ok(callback.calledOnce, "callback should be executed exactly once");
     });
 
 });

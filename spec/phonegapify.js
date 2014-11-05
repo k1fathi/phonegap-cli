@@ -39,9 +39,9 @@ test("PhoneGapify Module", function (t) {
 
         // then
         t.equal(chdirspy.args[0][0], phonegapify.__get__('cordovapath'),"should change the working directory");
-        t.equal(chdirspy.callCount, 1, "should change the working directory exactly once");
+        t.ok(chdirspy.calledOnce, "should change the working directory exactly once");
 
-        t.equal(spawnspy.callCount, 1, "should call child_process.spawn");
+        t.ok(spawnspy.calledOnce, "should call child_process.spawn");
         t.equal(spawnspy.args[0][0], 'cordova', "should spawn with 'cordova' as first argument");
         t.equal(spawnspy.args[0][1], cmd_argv, "should call spawn with unmoddified arguments");
 
