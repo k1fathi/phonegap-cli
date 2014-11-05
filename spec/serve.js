@@ -4,7 +4,7 @@ var sinon = require('sinon');
 var rewire = require('rewire');
 
 /* rewire module under test */
-var serve = rewire('../lib/cli/serve');
+var serve = rewire('../lib/serve');
 
 /* define spies */
 var serverstub; 

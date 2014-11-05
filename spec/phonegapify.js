@@ -4,7 +4,7 @@ var sinon = require('sinon');
 var rewire = require('rewire');
 
 /* rewire module under test */
-var phonegapify = rewire('../lib/cli/phonegapify');
+var phonegapify = rewire('../lib/phonegapify');
 
 var chdirspy = sinon.spy();
 var spawnspy = sinon.stub().returns({on: function (code, callback) {callback()}});
