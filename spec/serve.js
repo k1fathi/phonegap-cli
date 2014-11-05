@@ -34,6 +34,7 @@ function beforeEach() {
 /* teardown spies/stubs/mocks */
 function afterEach() {
     cdspy.reset();
+    callbackspy.reset();
     serve.__get__('server.listen').reset();
     serve.__get__('project.cd').reset();
 };
@@ -59,11 +60,11 @@ test("Serve Module", function (t) {
         serve(valid_options, callbackspy);
 
         // then
-        t.equal(cdspy.callCount, 1, "should attempt to change the working directory to the project directory");
+        t.ok(cdspy.calledOnce, "should attempt to change the working directory to the project directory");
         t.equal(serverstub.listen.callCount, 1, "should call the server module once");
         t.type(serverstub.listen.args[0][0], 'object', "should invoke the server module with options");
         t.equal(onstub.callCount, 0, "should register error, log and complete event listeners for server events");
-        t.equal(callbackspy.callCount, 1, "should call the callback passed in as a parameter");
+        t.ok(callbackspy.calledOnce, "should call the callback passed in as a parameter");
 
         afterEach();    
     });
@@ -71,7 +72,7 @@ test("Serve Module", function (t) {
     /* cd fail case  */
     beforeEach();
     t.test("when invoking serve with failing project.cd attempt", function (t) {
-        t.plan(1);
+        t.plan(2);
         
         // given
         cdspy.returns(false);
@@ -79,6 +80,8 @@ test("Serve Module", function (t) {
         
         // then
         t.equal(cdspy.callCount, 1, "should attempt to call the project.cd utility function");
+        t.ok(callbackspy.calledOnce, "should execute the callback passed in as a parameter");
+///        t.equal(callbackspy.args[0][
 
         afterEach();
     });
