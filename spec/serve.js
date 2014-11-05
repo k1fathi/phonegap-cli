@@ -56,18 +56,24 @@ test("Serve Module", function (t) {
     /* invoking with valid arguments */
     beforeEach();
     t.test("when invoking serve with a valid argument list", function (t) {
-        t.plan(6);
+        var datastub = {};
 
+        t.plan(8);
+        
         // given        
         serve(valid_options, callbackspy);
-
+        onstub.args[2][1](datastub); // 'emit' the complete event
         // then
         t.ok(cdspy.calledOnce, "should attempt to change the working directory to the project directory");
         t.equal(serverstub.listen.callCount, 1, "should call the server module once");
         t.type(serverstub.listen.args[0][0], 'object', "should invoke the server module with options");
         t.equal(onstub.callCount, 3, "should register event listeners for server events");
         t.ok(callbackspy.calledOnce, "should call the callback passed in as a parameter");
-        t.equal(callbackspy.args[0].length, 0, "should call the callback with no arguments");
+        t.equal(callbackspy.args[0].length, 2, "should call the callback with 2 arguments");
+        t.equal(callbackspy.args[0][0], null, "should call the callback with error === null");
+        t.equal(callbackspy.args[0][1], datastub, "should call the callback with data === datastub");
+
+
 
         afterEach();    
     });
@@ -92,7 +98,7 @@ test("Serve Module", function (t) {
     beforeEach()
     t.test("when executed, should register event handlers", function (t) {
         beforeEach();
-        t.plan(4);
+        t.plan(8);
 
         // given
         serve(valid_options, callbackspy);
@@ -100,8 +106,12 @@ test("Serve Module", function (t) {
         //then
         t.equal(onstub.callCount, 3, "should register 3 handers");
         t.ok(onstub.calledWithMatch('error'), "should register an 'error' event handler on the return object form Server.listen");
+        t.type(onstub.args[0][1], 'function', "should provide a handler function");
+        t.equal(onstub.args[0][1], serve.__get__('_errorHandler'), "should register the utility error handler");
         t.ok(onstub.calledWithMatch('log'), "should register an 'log' event handler on the return object form Server.listen");
+        t.type(onstub.args[1][1], 'function', "should provide a handler function");
         t.ok(onstub.calledWithMatch('complete'), "should register an 'complete' event handler on the return object form Server.listen");
+        t.type(onstub.args[2][1], 'function', "should provide a handler function");
         afterEach();
     });
 
