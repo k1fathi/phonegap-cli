@@ -59,7 +59,7 @@ test("phonegap create", function (t) {
                 t.ok(exists, "project has a platforms/");
             });
 
-            fs.exists(path.join(projpath, 'www'), function (exists) {
+            fs.exists(path.join(projpath, 'hooks'), function (exists) {
                 t.ok(exists, "project has a hooks/");
             });
         });
