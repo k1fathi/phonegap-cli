@@ -62,7 +62,7 @@ describe('phonegap.cordova(options, [callback])', function() {
 
     describe('executing a cordova command', function() {
         it('should output stdout data', function(done) {
-            phonegap.on('raw', function(data) {
+            phonegap.on('cordova', function(data) {
                 expect(data).toEqual('hello stdout');
                 done();
             });
