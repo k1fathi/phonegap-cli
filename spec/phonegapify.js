@@ -6,27 +6,30 @@ var rewire = require('rewire');
 /* rewire module under test */
 var phonegapify = rewire('../lib/phonegapify');
 
+/* fixtures */
+var retcode = 1;
+
+/* spies and stubs */
 var chdirspy = sinon.spy();
-var spawnspy = sinon.stub().returns({on: function (code, callback) {callback()}});
+var gtfospy = sinon.spy();
+var spawnspy = sinon.stub().returns({on: function (code, callback) { gtfospy(retcode); }});
 var callback = sinon.spy();
 
-/**
- *
- */
+/* */
 function beforeEach() {
+    gtfospy = sinon.spy();
     phonegapify.__set__('process.chdir', chdirspy);
     phonegapify.__set__('spawn', spawnspy);
+    phonegapify.__set__('process.exit', gtfospy);
 };
 
 var base_argv = [ 'node', 'something/something/phonegap' ];
 var cmd_argv = [ 'create', 'path/to/app' ];
 
-/**
- *
- */
+/* */
 beforeEach();
 test("PhoneGapify Module", function (t) {
-    t.plan(3);
+    t.plan(4);
 
     t.type(phonegapify, 'function', "should export a function");
 
@@ -57,7 +60,16 @@ test("PhoneGapify Module", function (t) {
         // then
         t.equal(chdirspy.callCount, 2, "");
     });
+
+    beforeEach();
+    t.test("should exit with exit code", function (t) {
+        t.plan(2);
+        
+        // given
+        phonegapify(cmd_argv, callback);
+        
+        // then
+        t.ok(gtfospy.called, "should attempt to exit");
+        t.equal(gtfospy.args[0][0], retcode, "should exit with the received code");
+    });
 });
-
-
-
