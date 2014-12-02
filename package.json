@@ -20,7 +20,7 @@
         "phonegap": "./bin/phonegap.js"
     },
     "scripts": {
-        "test": "tap --color spec",
+        "test": "jasmine-node spec",
         "e2e": "tap --color e2e"
     },
     "engineStrict": "true",
