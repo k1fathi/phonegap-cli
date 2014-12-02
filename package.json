@@ -43,6 +43,7 @@
         "sinon": "x.x.x",
         "rewire": "x.x.x",
         "async": "x.x.x",
+        "jasmine-node": "2.0.x",
         "fs.extra": "1.2.1",
         "shelljs": "0.3.0"
     },
